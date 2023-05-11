@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static  'styles/build.css' %}">
+    <script src="https://kit.fontawesome.com/6edbc20c4d.js" crossorigin="anonymous"></script>
+    <title>Booktique</title>
+</head>
+<style>
+    @font-face {
+        font-family: Lemonade;
+        font-weight: 400;
+        src: url({% static  'fonts/Lemonade-Regular.ttf' %});
+    }
+
+    @font-face {
+        font-family: Lemonade;
+        font-weight: 100;
+        src: url({% static  'fonts/Lemonade-Thin.ttf' %});
+    }
+
+    @font-face {
+        font-family: Lemonade;
+        font-weight: 900;
+        src: url({% static  'fonts/Lemonade-Bold.ttf' %});
+    }
+
+    @font-face {
+        font-family: Montserrat;
+        font-weight: 400;
+        src: url({% static  'fonts/Montserrat-Regular.ttf' %});
+    }
+
+    @font-face {
+        font-family: Montserrat;
+        font-weight: 900;
+        src: url({% static  'fonts/Montserrat-Medium.ttf' %});
+    }
+
+    #search,
+    #search i {
+        transition-duration: 200ms;
+    }
+
+    #search:hover i {
+        color: #FF725D;
+        transition-duration: 200ms;
+    }
+
+    #results-container {
+        overflow-y: scroll;
+        height: 30rem;
+        padding-right: 10px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+        margin: 4rem 0;
+
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #FF725D;
+        border-radius: 20px;
+    }
+
+    .urls{
+        min-width: 42rem;
+    }
+</style>
+
+
+<body class="font-montserrat h-screen overflow-y-hidden">
+    <header class="flex relative items-center justify-center">
+        <a href="https://github.com/sreetejadusi/booktique" target="_blank">
+            <img class="fixed top-4 left-4 w-20" src="{%  static 'github.png'%}" alt="GitHub">
+        </a>
+        <a href="">
+            <div class="flex items-end justify-center pt-4">
+                <img class="h-12" src="{%  static 'logo.png'%}" alt="logo">
+                <h1 class="text-4xl font-lemonade px-2">Booktique</h1>
+            </div>
+        </a>
+    </header>
+    <div class="flex flex-col max-h-full pt-20">
+        <div class="flex w-auto justify-center">
+            <input
+                class="bg-theme bg-opacity-20 rounded-full placeholder-gray-600 placeholder-opacity-80 w-7/12 h-12 px-8 pl-12 outline-none focus:outline-none"
+                type="text" name="search-box" id="query" placeholder="Search the Library">
+            <button id="search" class="px-2 rounded-full"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div id="results-container" class="items-center flex flex-col py-12 w-fit self-center">
+{#            <button id="search-result"#}
+{#                class="flex relative w-auto max-w-4xl px-64 my-1 py-2 text-left justify-center items-center rounded-xl hover:bg-theme bg-opacity-80 hover:bg-opacity-30 bg-white hover:border-transparent border-theme border-2 duration-200">#}
+{#                <img class="h-8 absolute left-4" src="{% static 'pdf.png' %}" alt="pdf">#}
+{#                <div>#}
+{#                    <h1 class="text-base">Data Structures and Algorithms in Java Fourth Edition.pdf</h1>#}
+{#                    <h2 class="text-xs max-w-2xl overflow-hidden">#}
+{#                        https://enos.itcollege.ee/~jpoial/algorithms/GT/Data%20Structures%20and%20Algorithms%20in%20Java%20Fourth%20Edition.pdfhttps://enos.itcollege.ee/~jpoial/algorithms/GT/Data%20Structures%20and%20Algorithms%20in%20Java%20Fourth%20Edition.pdf#}
+{#                    </h2>#}
+{#                </div>#}
+{#            </button>#}
+
+        </div>
+        <div id="quote" class="fixed -z-10 bottom-36 font-lemonade w-fit px-24 py-16 opacity-50 duration-200">
+            <h2 class="text-left text-4xl py-4">Books are uniquely portable magic...</h2>
+            <h2 class="text-right text-3xl py-2">~ Stephen King</h2>
+        </div>
+        <h2 class="fixed bottom-2 w-full text-center font-lemonade z-20 text-gray-800">Built by <a
+                href="https://linkedin.com/in/sreetejadusi" target="_blank">Sree Teja
+                Dusi</a>, <a href="https://linkedin.com/in/sreetejadusi">Harshita
+                Reddy</a>
+        </h2>
+    </div>
+    <div class="flex fixed -z-10 bottom-0 items-end justify-between w-full">
+        <img class="w-36" src="{%  static 'plant.png'%}" alt="plant">
+        <img class="w-96" src="{%  static 'girl.png'%}" alt="">
+    </div>
+</body>
+<script>
+  function handleClick() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (this.readyState === 4 && this.status === 200) {
+        var response = JSON.parse(this.responseText);
+        var resultsContainer = document.getElementById("results-container");
+        var titles = Object.keys(response.data);
+        document.getElementById('quote').style.opacity='0.0';
+        for (var i = 0; i < titles.length; i++) {
+          let html = '<a href='+response.data[titles[i]]+' target="_blank"';
+          html+='class="search-result flex relative w-auto max-w-4xl px-64 my-1 py-2 text-left justify-center items-center rounded-xl hover:bg-theme bg-opacity-80 hover:bg-opacity-30 bg-white hover:border-transparent border-theme border-2 duration-200">';
+          html+=('<img class="h-8 absolute left-4" src="{% static 'pdf.png' %}" alt="pdf">');
+          html+=('<div>');
+          html+='<h1 class="text-base">'+titles[i]+'</h1>';
+          html+=('<h2 class="urls text-xs min-w-2xl max-w-2xl overflow-hidden">');
+          html+=response.data[titles[i]];
+          html+=('</h2>');
+          html+=('</div>');
+          html+=('</button>');
+          resultsContainer.insertAdjacentHTML("beforeend", html);
+        }
+      }
+    };
+    var query = document.getElementById("query").value;
+    xhr.open("GET", `/get_urls/?query=${encodeURIComponent(query)}&page=${encodeURIComponent(0)}`);
+    xhr.send();
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("search").addEventListener("click", handleClick);
+  });
+</script>
+
+
+</html>

@@ -2,13 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404, JsonResponse
 import requests
 from bs4 import BeautifulSoup
-my_list = []
+data = []
 def home(request):
-    my_list.clear()
-    return render(request, 'home/index.html')
+    data.clear()
+    return render(request, './index.html')
 
 
-def update_list(request):
+def get_urls(request):
     query = request.GET.get('query')
     page = int(request.GET.get('page'))
     filetypes = ['pdf','docx','ipub','xlsx','csv','ppt']
@@ -18,6 +18,5 @@ def update_list(request):
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
     links = soup.find_all('a', href=True)
-    my_list= [str(x['href']) for x in links if str(x['href']).endswith('pdf')]
-    print(my_list)
-    return JsonResponse({'my_list': my_list})
+    data= {str(x.find_next('h3').text):str(x['href']) for x in links if str(x['href']).endswith('pdf')}
+    return JsonResponse({'data': data})
