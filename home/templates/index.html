@@ -75,6 +75,17 @@
     .urls{
         min-width: 42rem;
     }
+    .selector {
+        padding: 0.25rem 0.5rem;
+        color: black;
+        border-radius: 0.5rem;
+        height: fit-content;
+        margin: 0 0.25rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        transition-duration: 200ms;
+    }
+
 </style>
 
 
@@ -90,34 +101,37 @@
             </div>
         </a>
     </header>
-    <div class="flex flex-col max-h-full pt-20">
+    <div id="body-container" style="padding-top: 24rex; transition-duration: 500ms" class="flex flex-col max-h-full">
         <div class="flex w-auto justify-center">
             <input
                 class="bg-theme bg-opacity-20 rounded-full placeholder-gray-600 placeholder-opacity-80 w-7/12 h-12 px-8 pl-12 outline-none focus:outline-none"
                 type="text" name="search-box" id="query" placeholder="Search the Library">
             <button id="search" class="px-2 rounded-full"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
-        <div id="results-container" class="items-center flex flex-col py-12 w-fit self-center">
-{#            <button id="search-result"#}
-{#                class="flex relative w-auto max-w-4xl px-64 my-1 py-2 text-left justify-center items-center rounded-xl hover:bg-theme bg-opacity-80 hover:bg-opacity-30 bg-white hover:border-transparent border-theme border-2 duration-200">#}
-{#                <img class="h-8 absolute left-4" src="{% static 'pdf.png' %}" alt="pdf">#}
-{#                <div>#}
-{#                    <h1 class="text-base">Data Structures and Algorithms in Java Fourth Edition.pdf</h1>#}
-{#                    <h2 class="text-xs max-w-2xl overflow-hidden">#}
-{#                        https://enos.itcollege.ee/~jpoial/algorithms/GT/Data%20Structures%20and%20Algorithms%20in%20Java%20Fourth%20Edition.pdfhttps://enos.itcollege.ee/~jpoial/algorithms/GT/Data%20Structures%20and%20Algorithms%20in%20Java%20Fourth%20Edition.pdf#}
-{#                    </h2>#}
-{#                </div>#}
-{#            </button>#}
+        <h3 id="results-count" class="text-sm flex self-center text-center justify-between w-7/12 pr-8 outline-none focus:outline-none py-2"></h3>
 
-        </div>
-        <div id="quote" class="fixed -z-10 bottom-36 font-lemonade w-fit px-24 py-16 opacity-50 duration-200">
+            <!-- <button id="search-result"
+                class="flex relative w-auto max-w-4xl px-64 my-1 py-2 text-left justify-center items-center rounded-xl hover:bg-theme bg-opacity-80 hover:bg-opacity-30 bg-white hover:border-transparent border-theme border-2 duration-200">
+                <img class="h-8 absolute left-4" src="{% static 'pdf.png' %}" alt="pdf">
+                <div>
+                    <h1 class="text-base">Data Structures and Algorithms in Java Fourth Edition.pdf</h1>
+                    <h2 class="text-xs max-w-2xl overflow-hidden">
+
+                        https://enos.itcollege.ee/~jpoial/algorithms/GT/Data%20Structures%20and%20Algorithms%20in%20Java%20Fourth%20Edition.pdfhttps://enos.itcollege.ee/~jpoial/algorithms/GT/Data%20Structures%20and%20Algorithms%20in%20Java%20Fourth%20Edition.pdf
+                    </h2>
+                </div>
+            </button> -->
+            <div style="padding-bottom:2rem" id="results-container" class="items-center flex flex-col w-fit self-center" >
+                <button style="visibility: hidden; margin-top: 2rem" id="load-more" class="self-center bg-opacity-20 hover:bg-opacity-30 bg-theme px-2 py-2 bottom-0 rounded-xl duration-200">Load more</button>
+            </div>
+
+
+        <div style="transition-duration: 500ms" id="quote"
+            class="fixed -z-10 bottom-36 font-lemonade w-fit px-24 py-16 opacity-50">
             <h2 class="text-left text-4xl py-4">Books are uniquely portable magic...</h2>
             <h2 class="text-right text-3xl py-2">~ Stephen King</h2>
         </div>
-        <h2 class="fixed bottom-2 w-full text-center font-lemonade z-20 text-gray-800">Built by <a
-                href="https://linkedin.com/in/sreetejadusi" target="_blank">Sree Teja
-                Dusi</a>, <a href="https://linkedin.com/in/sreetejadusi">Harshita
-                Reddy</a>
+        <h2 style="z-index:-20;bottom: 8px" class="fixed self-center text-center font-lemonade z-20 text-gray-800 bg-white">Built with ❤️ by humans on 🌏.
         </h2>
     </div>
     <div class="flex fixed -z-10 bottom-0 items-end justify-between w-full">
@@ -126,7 +140,9 @@
     </div>
 </body>
 <script>
-  function handleClick() {
+    let page = 0;
+    let reslen = 0;
+    function getData() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (this.readyState === 4 && this.status === 200) {
@@ -134,9 +150,12 @@
         var resultsContainer = document.getElementById("results-container");
         var titles = Object.keys(response.data);
         document.getElementById('quote').style.opacity='0.0';
+        document.getElementById('body-container').style.paddingTop='8rex';
+        reslen+=titles.length;
+        document.getElementById('results-count').innerText=reslen.toString()+' results found.';
         for (var i = 0; i < titles.length; i++) {
           let html = '<a href='+response.data[titles[i]]+' target="_blank"';
-          html+='class="search-result flex relative w-auto max-w-4xl px-64 my-1 py-2 text-left justify-center items-center rounded-xl hover:bg-theme bg-opacity-80 hover:bg-opacity-30 bg-white hover:border-transparent border-theme border-2 duration-200">';
+          html+='class="search-result flex relative w-auto max-w-4xl px-64 my-1 py-2 text-left justify-center items-center rounded-xl hover:bg-theme bg-opacity-100 hover:bg-opacity-30 bg-white hover:border-transparent border-theme border-2 duration-200">';
           html+=('<img class="h-8 absolute left-4" src="{% static 'pdf.png' %}" alt="pdf">');
           html+=('<div>');
           html+='<h1 class="text-base">'+titles[i]+'</h1>';
@@ -145,18 +164,19 @@
           html+=('</h2>');
           html+=('</div>');
           html+=('</button>');
-          resultsContainer.insertAdjacentHTML("beforeend", html);
+          resultsContainer.insertAdjacentHTML("afterbegin", html);
         }
+        page+=1
+        document.getElementById('load-more').style.visibility='visible';
       }
     };
     var query = document.getElementById("query").value;
-    xhr.open("GET", `/get_urls/?query=${encodeURIComponent(query)}&page=${encodeURIComponent(0)}`);
+    xhr.open("GET", `/get_urls/?query=${encodeURIComponent(query)}&page=${encodeURIComponent(page)}`);
     xhr.send();
   }
 
-  document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("search").addEventListener("click", handleClick);
-  });
+    document.getElementById("search").addEventListener("click", getData);
+    document.getElementById("load-more").addEventListener("click", getData);
 </script>
 
 

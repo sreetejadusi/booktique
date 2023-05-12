@@ -1800,9 +1800,69 @@ video {
   border-style: none;
 }
 
+.border-\[\#0D6E38\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(13 110 56 / var(--tw-border-opacity));
+}
+
+.border-\[\#31BE7D\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(49 190 125 / var(--tw-border-opacity));
+}
+
+.border-\[\#4073C4\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(64 115 196 / var(--tw-border-opacity));
+}
+
+.border-\[\#86B918\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(134 185 24 / var(--tw-border-opacity));
+}
+
+.border-\[\#CE502F\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(206 80 47 / var(--tw-border-opacity));
+}
+
+.border-\[\#FF0000\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 0 0 / var(--tw-border-opacity));
+}
+
 .border-theme {
   --tw-border-opacity: 1;
   border-color: rgb(255 114 93 / var(--tw-border-opacity));
+}
+
+.bg-\[\#0D6E38\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(13 110 56 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#31BE7D\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(49 190 125 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#4073C4\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(64 115 196 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#86B918\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(134 185 24 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#CE502F\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(206 80 47 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#FF0000\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 0 0 / var(--tw-bg-opacity));
 }
 
 .bg-\[rgb\(255\2c 0\2c 0\)\] {
@@ -1818,6 +1878,10 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-opacity-0 {
+  --tw-bg-opacity: 0;
 }
 
 .bg-opacity-20 {
@@ -1982,8 +2046,8 @@ video {
   padding-left: 3rem;
 }
 
-.pt-20 {
-  padding-top: 5rem;
+.pr-8 {
+  padding-right: 2rem;
 }
 
 .pt-4 {
@@ -2067,6 +2131,11 @@ video {
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .text-xs {
@@ -2546,6 +2615,10 @@ video {
 .hover\:bg-theme:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 114 93 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-opacity-25:hover {
+  --tw-bg-opacity: 0.25;
 }
 
 .hover\:bg-opacity-30:hover {

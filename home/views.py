@@ -2,17 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404, JsonResponse
 import requests
 from bs4 import BeautifulSoup
-data = []
 def home(request):
-    data.clear()
     return render(request, './index.html')
 
 
 def get_urls(request):
     query = request.GET.get('query')
     page = int(request.GET.get('page'))
-    filetypes = ['pdf','docx','ipub','xlsx','csv','ppt']
-    url = f'https://google.com/search?q={query}&start={10*page}&num=10'
+    url = f"https://google.com/search?q={query+'filetype:pdf'}&start={10*page}&num=10"
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
     response = requests.get(url, headers=headers)
