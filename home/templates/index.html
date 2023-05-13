@@ -122,6 +122,7 @@
                 </div>
             </button> -->
             <div style="padding-bottom:2rem" id="results-container" class="items-center flex flex-col w-fit self-center" >
+                <div id="results"></div>
                 <button style="visibility: hidden; margin-top: 2rem" id="load-more" class="self-center bg-opacity-20 hover:bg-opacity-30 bg-theme px-2 py-2 bottom-0 rounded-xl duration-200">Load more</button>
             </div>
 
@@ -143,12 +144,12 @@
     let page = 0;
     let reslen = 0;
     function getData() {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
       if (this.readyState === 4 && this.status === 200) {
-        var response = JSON.parse(this.responseText);
-        var resultsContainer = document.getElementById("results-container");
-        var titles = Object.keys(response.data);
+        var response = JSON.parse(this.response);
+        var resultsContainer = document.getElementById("results");
+        var titles = Object.keys(response['data']);
         document.getElementById('quote').style.opacity='0.0';
         document.getElementById('body-container').style.paddingTop='8rex';
         reslen+=titles.length;
@@ -164,15 +165,15 @@
           html+=('</h2>');
           html+=('</div>');
           html+=('</button>');
-          resultsContainer.insertAdjacentHTML("afterbegin", html);
+          resultsContainer.insertAdjacentHTML("beforeend", html);
         }
         page+=1
         document.getElementById('load-more').style.visibility='visible';
       }
     };
     var query = document.getElementById("query").value;
-    xhr.open("GET", `/get_urls/?query=${encodeURIComponent(query)}&page=${encodeURIComponent(page)}`);
-    xhr.send();
+    request.open("GET", `/get_urls/?query=${encodeURIComponent(query)}&page=${encodeURIComponent(page)}`);
+    request.send();
   }
 
     document.getElementById("search").addEventListener("click", getData);
